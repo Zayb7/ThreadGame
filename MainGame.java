@@ -1,7 +1,9 @@
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MainGame extends JFrame{
 
@@ -22,6 +24,9 @@ public class MainGame extends JFrame{
 		// Create the list of players
 		players = new ArrayList<Player>();
 		// ADD YOUR PLAYERS HERE! BE SURE THE HUMAN IS THE FIRST IN THE LIST.
+		players.add(new Human());
+		players.add(new Computer());
+		players.add(new Computer());
 
 		// Grid can be initialized as soon as the players are added
 		graphics.initialize(players); 
