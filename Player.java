@@ -3,12 +3,11 @@ public abstract class Player implements Runnable {
 	//variables
 	protected char dir;
 	protected int points;
-	protected Location loc;
+	protected Location loc = new Location(0,0);
 	
 	public Player(){
 		points = 0;
 		dir = 'D';
-		loc = new Location(0,0);
 	}
 	
 	
@@ -39,16 +38,67 @@ public abstract class Player implements Runnable {
 
 
 	public abstract void setLocation(Location loc);
+	
+	public void move(Location currentLoc){
+		//choose the direction
+		Location temp = loc;
+		char dir = this.chooseDirection();
 
+		//makes and checks temporary location 
+		switch(dir){
 
-	public void run() {
+			case 'L':
+				temp.setX(loc.getX() - 1);
+				break;
+	
+			case 'R':
+				temp.setX(loc.getX() + 1);
+				break;
+	
+			case 'U':
+				temp.setY(loc.getY() - 1);
+				break;
+	
+			case 'D':
+				temp.setY(loc.getY() + 1);
+				break;	
+
+		}
+
+		//update location
+		boolean isPlayer = false;
+		
+		if(this instanceof Human){
+			isPlayer = true;
+		} else{
+			isPlayer = false;
+		}
+		
+		//checks if location is blocked
+		//if(GraphicsPanel.isBlocked(temp, isPlayer)){
+			
+		//}
+	}
+	
+	public abstract char chooseDirection();
+	
+	public void start() {
 		
 	}
 
-
-	public void start() {
-		// TODO Auto-generated method stub
-		
+	public synchronized void run() {
+		//infinite loop
+		while(true){
+			//moves 
+			
+			//sleeps
+			try {
+				Thread.sleep(MainGame.DELAY);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 

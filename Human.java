@@ -8,8 +8,13 @@ public class Human extends Player {
 	}
 
 	@Override
-	public void setLocation(Location location) {
+	public synchronized void setLocation(Location location) {
 		loc = location;
+	}
+
+	@Override
+	public char chooseDirection() {
+		return ' ';
 	}
 
 }
