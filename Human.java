@@ -1,24 +1,29 @@
 
 public class Human extends Player {
 	
-	public Human() {
-		super();
+	public Human(GraphicsPanel g) {
+		super(g);
 	}
 
 	@Override
-	public synchronized void setLocation(Location location) {
-		loc = location;
+	public void setLocation(Location location) {
+			loc = location;
 	}
 
 	@Override
-	public char chooseDirection() {
-		return ' ';
+	public void chooseDirection() {
 	}
 
 	@Override
 	public void initLoc() {
 		//sets up the initial location 
-		this.setLocation(new Location(0,0));
+		loc = new Location(0,0);
+		
+	}
+
+	@Override
+	public void setDirection(char dir) {
+		this.dir = dir;
 		
 	}
 

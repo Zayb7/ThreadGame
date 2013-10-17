@@ -5,22 +5,27 @@ public abstract class Player implements Runnable {
 	protected int points;
 	protected Location loc = new Location(0,0);
 	protected Thread playThread = new Thread(this);
+	protected GraphicsPanel graphics;
 	
-	public Player(){
+	public Player(GraphicsPanel g){
+		graphics = g;
 		points = 0;
-		dir = 'D';
-		initLoc();
+		dir = ' ';
+		this.initLoc();
 		
 	}
 	
+	public void start() {
+		playThread.start();
+	}
 	
 	public int getPoints() {
 		return points;
 	}
 
 
-	public void setPoints(int points) {
-		this.points = points;
+	public void addPoints() {
+		this.points++;
 	}
 
 
@@ -29,9 +34,7 @@ public abstract class Player implements Runnable {
 	}
 
 
-	public void setDirection(char dir) {
-		this.dir = dir;
-	}
+	public abstract void setDirection(char dir);
 
 
 	public Location getLocation() {
@@ -42,52 +45,52 @@ public abstract class Player implements Runnable {
 
 	public abstract void setLocation(Location loc);
 	
-	public void move(Location currentLoc){
+	public synchronized void move(){
 		//choose the direction
-		Location temp = loc;
-		char currentDir = this.dir; 
+		Location temp = new Location(loc.getX(), loc.getY());
+	
+		this.chooseDirection(); 
 
 		//makes and checks temporary location 
 		switch(dir){
 
 			case 'L':
-				temp.setX(loc.getX() - 1);
+				temp.setX(temp.getX() - 1);
 				break;
 	
 			case 'R':
-				temp.setX(loc.getX() + 1);
+				temp.setX(temp.getX() + 1);
 				break;
 	
 			case 'U':
-				temp.setY(loc.getY() - 1);
+				temp.setY(temp.getY() - 1);
 				break;
 	
 			case 'D':
-				temp.setY(loc.getY() + 1);
-				break;	
+				temp.setY(temp.getY() + 1);
+				break;
+			
+			case ' ':
+				this.setLocation(loc);
+				break;
+			
 
-		}
-
-		//update location
-		boolean isPlayer = false;
-		
-		if(this instanceof Human){
-			isPlayer = true;
-		} else{
-			isPlayer = false;
 		}
 		
 		//checks if location is blocked
-		if(MainGame.graphics.isBlocked(temp, isPlayer == false)){
-			loc = temp;
+		if(graphics.isBlocked(temp, true)){
+			this.setLocation(loc);	
+		} else{
+			this.setLocation(temp);
+		}
+		
+		if(graphics.isTarget(temp)){
+			this.addPoints();
+			graphics.checkForPoint(temp);
 		}
 	}
 	
-	public abstract char chooseDirection();
-	
-	public void start() {
-		playThread.start();
-	}
+	public abstract void chooseDirection();
 	
 	public abstract void initLoc();
 
@@ -95,7 +98,7 @@ public abstract class Player implements Runnable {
 		//infinite loop
 		while(true){
 			//moves 
-			this.move(loc);
+			this.move();
 			//sleeps
 			try {
 				Thread.sleep(MainGame.DELAY);
@@ -103,13 +106,13 @@ public abstract class Player implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
 	}
 
 
 	public void stopPlaying() {
-		// TODO Auto-generated method stub
-		
+		playThread = null;
 	}
 
 }
