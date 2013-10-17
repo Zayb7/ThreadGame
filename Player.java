@@ -4,10 +4,13 @@ public abstract class Player implements Runnable {
 	protected char dir;
 	protected int points;
 	protected Location loc = new Location(0,0);
+	protected Thread playThread = new Thread(this);
 	
 	public Player(){
 		points = 0;
 		dir = 'D';
+		initLoc();
+		
 	}
 	
 	
@@ -42,7 +45,7 @@ public abstract class Player implements Runnable {
 	public void move(Location currentLoc){
 		//choose the direction
 		Location temp = loc;
-		char dir = this.chooseDirection();
+		char currentDir = this.dir; 
 
 		//makes and checks temporary location 
 		switch(dir){
@@ -75,22 +78,24 @@ public abstract class Player implements Runnable {
 		}
 		
 		//checks if location is blocked
-		//if(GraphicsPanel.isBlocked(temp, isPlayer)){
-			
-		//}
+		if(MainGame.graphics.isBlocked(temp, isPlayer == false)){
+			loc = temp;
+		}
 	}
 	
 	public abstract char chooseDirection();
 	
 	public void start() {
-		
+		playThread.start();
 	}
+	
+	public abstract void initLoc();
 
 	public synchronized void run() {
 		//infinite loop
 		while(true){
 			//moves 
-			
+			this.move(loc);
 			//sleeps
 			try {
 				Thread.sleep(MainGame.DELAY);

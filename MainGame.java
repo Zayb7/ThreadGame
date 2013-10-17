@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class MainGame extends JFrame{
 
-	GraphicsPanel graphics;	//Graphics to draw the map
+	public static GraphicsPanel graphics;	//Graphics to draw the map
 	public static final int DELAY = 200;  //Indicates how long to delay between moves
 	ArrayList<Player> players; // List of players, with human as player 0
 

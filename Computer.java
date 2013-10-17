@@ -5,6 +5,8 @@ public class Computer extends Player {
 	private Location locat = new Location(0,0);
 	
 	public Computer() {
+		super();
+		
 		loc = locat;
 		
 		//randomnly selects a starting location for computer
@@ -31,6 +33,12 @@ public class Computer extends Player {
 	@Override
 	public char chooseDirection() {
 		return ' ';
+	}
+
+	@Override
+	public void initLoc() {
+		
+		
 	}
 	
 }
